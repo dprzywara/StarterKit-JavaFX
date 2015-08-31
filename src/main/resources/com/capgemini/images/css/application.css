@@ -1,0 +1,7 @@
+.table-view .table-row-cell:selected {
+	-fx-font-weight: bold;
+	-fx-font-size: 130.0%;
+}
+.hbox {
+	-fx-background-color: #336699;
+}
