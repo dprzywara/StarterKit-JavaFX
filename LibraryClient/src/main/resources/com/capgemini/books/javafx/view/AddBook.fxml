@@ -11,6 +11,7 @@
 <AnchorPane prefHeight="409.0" prefWidth="508.0" styleClass="AddBookform" xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.capgemini.books.javafx.controller.BookAddController">
       <TableView fx:id="authorsTable" layoutX="12.0" layoutY="178.0" prefHeight="220.0" prefWidth="303.0">
         <columns>
+          <!-- REV: tlumaczenie dla tekstow z bundle -->
           <TableColumn fx:id="firstNameColumn" prefWidth="152.0" text="First Name" />
           <TableColumn fx:id="lastNameColumn" prefWidth="149.0" text="Last Name" />
         </columns>

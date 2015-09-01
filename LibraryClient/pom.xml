@@ -16,18 +16,21 @@
       <scope>compile</scope>
       <version>1.2.17</version>
     </dependency>
+    <!-- REV: ta biblioteka nie jest uzywana w projekcie -->
     <dependency>
       <groupId>javazoom</groupId>
       <artifactId>jlayer</artifactId>
       <scope>compile</scope>
       <version>1.0.1</version>
     </dependency>
+    <!-- REV: ta biblioteka nie jest uzywana w projekcie -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
       <version>4.12</version>
     </dependency>
+    <!-- REV: ta biblioteka nie jest uzywana w projekcie -->
 <dependency>
 <groupId>org.controlsfx</groupId>
 <artifactId>controlsfx</artifactId>

@@ -35,6 +35,7 @@
    <Separator layoutY="73.0" prefHeight="3.0" prefWidth="591.0" />
    <MenuButton fx:id="menu" layoutX="465.0" layoutY="100.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="131.0" text="%button.menu">
      <items>
+       <!-- REV: tlumaczenie dla tekstow z bundle -->
        <MenuItem fx:id="AddBook" mnemonicParsing="false" onAction="#OpenBookView" text="Add Book" />
        <MenuItem fx:id="deleteBook" mnemonicParsing="false" onAction="#deleteBook" text="Delete book" />
 

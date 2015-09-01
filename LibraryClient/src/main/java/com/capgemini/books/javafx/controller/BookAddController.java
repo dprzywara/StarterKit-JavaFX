@@ -42,6 +42,9 @@ public class BookAddController {
 	@FXML
 	URL location;
 
+	/*
+	 * REV: nazwa pola z malej litery
+	 */
 	@FXML
 	Button AddAuthor;
 
@@ -103,10 +106,17 @@ public class BookAddController {
 
 		new Thread(backgroundTask).start();
 
+		/*
+		 * REV: zamkniecie okna dodawania ksiazki powinno byc wykonane po poprawnym dodaniu ksiazki.
+		 * Najlepiej przeciazyc metode Task.succeeded().
+		 */
 		Stage stage = (Stage) saveButton.getScene().getWindow();
 		stage.close();
 	}
 
+	/*
+	 * REV: nazwa metody z malej litery
+	 */
 	@FXML
 	public void AddAuthor(ActionEvent event) {
 
@@ -118,15 +128,24 @@ public class BookAddController {
 		dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
 		GridPane grid = new GridPane();
+		/*
+		 * REV: lepiej zrobic to w CSSie
+		 */
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(20, 150, 10, 10));
 
+		/*
+		 * REV: lepiej zdefiniowac TextField w FXMLu
+		 */
 		TextField firstNameField = new TextField();
 		firstNameField.setPromptText("First name");
 		TextField lastNameField = new TextField();
 		lastNameField.setPromptText("Last name");
 
+		/*
+		 * REV: lepiej zdefiniowac labelke w FXMLu
+		 */
 		grid.add(new Label("First Name:"), 0, 0);
 		grid.add(firstNameField, 1, 0);
 		grid.add(new Label("Last Name:"), 0, 1);
@@ -134,6 +153,9 @@ public class BookAddController {
 		Node addButton = dialog.getDialogPane().lookupButton(ButtonType.OK);
 		addButton.setDisable(true);
 
+		/*
+		 * REV: lepiej zdefiniowac binding dla 'disableProperty' w addButton.
+		 */
 		firstNameField.textProperty().addListener((observable, oldValue, newValue) -> {
 			addButton.setDisable(newValue.trim().isEmpty());
 		});

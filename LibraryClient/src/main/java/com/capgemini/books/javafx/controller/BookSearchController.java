@@ -154,6 +154,9 @@ public class BookSearchController {
 	}
 
 
+	/*
+	 * REV: nazwa metody z malej litery
+	 */
 	@FXML
 	public void OpenBookView(ActionEvent event) throws IOException {
 

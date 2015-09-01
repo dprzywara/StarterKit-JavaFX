@@ -34,6 +34,9 @@ public class DataProviderImpl implements DataProvider {
 
 		LOG.debug("Entering findBooks()");
 		List<BookVO> result = new ArrayList<BookVO>();
+		/*
+		 * REV: utworzenie ObjectMappera jest kosztowne, powinien byc utworzony w konstruktorze i przypisany do pola w klasie.
+		 */
 		ObjectMapper mapper = new ObjectMapper();
 
 		if (prefix == null) {
@@ -43,6 +46,9 @@ public class DataProviderImpl implements DataProvider {
 
 		try {
 
+			/*
+			 * REV: adres serwera poiwinien byc pobierany z pliku konfiguracyjnego
+			 */
 			URL url = new URL("http://localhost:9721/workshop/rest/books/books-by-title?titlePrefix=" + prefix);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -61,13 +67,21 @@ public class DataProviderImpl implements DataProvider {
 			output = new String(output.getBytes(), "UTF-8");
 			result = mapper.readValue(output, new TypeReference<List<BookVO>>() {
 			});
+			/*
+			 * REV: rozlaczenie poiwnno byc w bloku finally, tak zeby rozlaczal tez przy wyjatku
+			 */
 			conn.disconnect();
 
 		} catch (MalformedURLException e) {
-
+			/*
+			 * REV: fajniej byloby rzucic jakis wyjatek i pokazac blad w GUI.
+			 */
 			e.printStackTrace();
 
 		} catch (IOException e) {
+			/*
+			 * REV: zawsze uzywaj loggera !
+			 */
 			System.out.println("Brak serwera");
 			e.printStackTrace();
 
@@ -79,7 +93,9 @@ public class DataProviderImpl implements DataProvider {
 
 	@Override
 	public BookVO saveBook(BookVO book) {
-
+		/*
+		 * REV: j.w.
+		 */
 		ObjectMapper objectMapper = new ObjectMapper();
 		String Bookjson = null;
 		BookVO result = new BookVO();
@@ -90,7 +106,9 @@ public class DataProviderImpl implements DataProvider {
 			Bookjson = ow.writeValueAsString(book);
 
 		} catch (JsonGenerationException e) {
-
+			/*
+			 * REV: j.w.
+			 */
 			e.printStackTrace();
 
 		} catch (JsonMappingException e) {
@@ -104,7 +122,9 @@ public class DataProviderImpl implements DataProvider {
 		}
 
 		try {
-
+			/*
+			 * REV: j.w.
+			 */
 			URL url = new URL("http://localhost:9721/workshop/rest/books/book");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
@@ -122,9 +142,15 @@ public class DataProviderImpl implements DataProvider {
 
 			String output = br.readLine();
 			result = objectMapper.readValue(output, BookVO.class);
+			/*
+			 * REV: j.w.
+			 */
 			conn.disconnect();
 
 		} catch (MalformedURLException e) {
+			/*
+			 * REV: j.w.
+			 */
 
 			e.printStackTrace();
 
@@ -143,7 +169,9 @@ public class DataProviderImpl implements DataProvider {
 		LOG.debug("Entering deleteBook()");
 
 		try {
-
+			/*
+			 * REV: j.w.
+			 */
 			URL url = new URL("http://localhost:9721/workshop/rest/books/book/" + id);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -155,14 +183,21 @@ public class DataProviderImpl implements DataProvider {
 				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
 
 			}
-
+			/*
+			 * REV: j.w.
+			 */
 			conn.disconnect();
 
 		} catch (MalformedURLException e) {
-
+			/*
+			 * REV: j.w.
+			 */
 			e.printStackTrace();
 
 		} catch (IOException e) {
+			/*
+			 * REV: j.w.
+			 */
 			System.out.println("blad z serwera");
 			e.printStackTrace();
 		}
