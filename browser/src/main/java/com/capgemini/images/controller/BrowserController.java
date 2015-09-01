@@ -69,6 +69,9 @@ public class BrowserController {
 	ScrollPane scrollThumbnails;
 	@FXML
 	Slider zoomSlider;
+	/*
+	 * REV: nazwa pola zawsze z malej litery
+	 */
 	@FXML
 	HBox HboxThumbnails;
 	@FXML
@@ -78,6 +81,10 @@ public class BrowserController {
 
 	final private ImagesModel model = new ImagesModel();
 	private boolean STOP = false;
+
+	/*
+	 * REV: to pole nie powinno byc statyczne
+	 */
 	private static List<ImageVO> listOfImages;
 
 	private static final double DEFAULT_THUMBNAIL_WIDTH = 150;
@@ -90,6 +97,9 @@ public class BrowserController {
 	private void initialize() {
 
 		scrollImage.setPannable(true);
+		/*
+		 * REV: a co jak obrazek zniknie z serwera? :)
+		 */
 		String url = "https://www.colourbox.com/preview/8649111-no-photo-camera-sign-icon-photo-flash-symbol.jpg";
 		Image image = new Image(url, 497, 377, false, true);
 		imageView.fitHeightProperty().set(scrollImage.getPrefHeight());
@@ -115,6 +125,9 @@ public class BrowserController {
 
 		imageName.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getName()));
 
+		/*
+		 * REV: tlumaczenie z bundle
+		 */
 		imagesTable.setPlaceholder(new Label("brak obrazkow"));
 
 		imagesTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ImageVO>() {
@@ -231,10 +244,19 @@ public class BrowserController {
 		String currentDir = System.getProperty("user.dir") + File.separator;
 		directoryChooser.setInitialDirectory(new File(currentDir));
 
+		/*
+		 * REV: okno 'directoryChooser' nie jest modalne.
+		 * Powinienes przekazac primaryStage do showDialog().
+		 */
 		File selectedDirectory = directoryChooser.showDialog(new Stage());
 
 		if (selectedDirectory == null) {
 
+			/*
+			 * REV: skoro user nic nie wybral to moze sie rozmyslil :)
+			 * Alert jest troche denerujacy w tym przypadku.
+			 * Poza tym najpierw wyswietla sie error, a potem info.
+			 */
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error Alert");
 			alert.setHeaderText("Error");
@@ -253,8 +275,14 @@ public class BrowserController {
 		File folder = new File(path);
 		File[] listOfFiles = folder.listFiles();
 
+		/*
+		 * REV: lepiej skorzystac z FilenameFilter przy File.listFiles().
+		 */
 		for (int i = 0; i < listOfFiles.length; i++) {
 
+			/*
+			 * REV: a co gdy plik ma rozszerzenie 'jPg' ;)
+			 */
 			if (listOfFiles[i].getName().endsWith("jpg") || listOfFiles[i].getName().endsWith("JPG")
 					|| listOfFiles[i].getName().endsWith("png") || listOfFiles[i].getName().endsWith("PNG")) {
 				listOfImages.add(new ImageVO(i + 1, listOfFiles[i].getName(), listOfFiles[i].getAbsolutePath()));
@@ -273,6 +301,9 @@ public class BrowserController {
 
 		if (listOfImages.size() == 0) {
 
+			/*
+			 * REV: ten alert jest niepotrzebny.
+			 */
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Empty list information");
 			alert.setHeaderText("Information Alert");
@@ -323,6 +354,9 @@ public class BrowserController {
 			@Override
 			protected Collection<ImageVO> call() throws Exception {
 				for (int i = 0; i < imagesTable.getItems().size(); i++) {
+					/*
+					 * REV: modyfikacje kontrolek GUI powinny odbywac sie w watku JavaFX
+					 */
 					imagesTable.getSelectionModel().select(imagesTable.getItems().get(i));
 					if (STOP) {
 						break;

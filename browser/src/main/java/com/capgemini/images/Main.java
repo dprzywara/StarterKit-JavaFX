@@ -28,6 +28,9 @@ import javafx.scene.shape.Rectangle;
 
 public class Main extends Application {
 
+	/*
+	 * REV: these fields are not used
+	 */
 	List<Image> images = new ArrayList<>();
 	 ImageView[] imagesView;
 
