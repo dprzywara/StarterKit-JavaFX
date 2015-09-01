@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?scenebuilder-preview-i18n-resource ../bundle/bundle.properties?>
+<?scenebuilder-stylesheet ../css/standard.css?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="409.0" prefWidth="508.0" styleClass="AddBookform" xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.capgemini.books.javafx.controller.BookAddController">
+      <TableView fx:id="authorsTable" layoutX="12.0" layoutY="178.0" prefHeight="220.0" prefWidth="303.0">
+        <columns>
+          <TableColumn fx:id="firstNameColumn" prefWidth="152.0" text="First Name" />
+          <TableColumn fx:id="lastNameColumn" prefWidth="149.0" text="Last Name" />
+        </columns>
+      </TableView>
+      <Button fx:id="AddAuthor" layoutX="358.0" layoutY="178.0" mnemonicParsing="false" onAction="#AddAuthor" text="%label.addAuthor" />
+      <Button fx:id="removeAuthor" layoutX="358.0" layoutY="223.0" mnemonicParsing="false" onAction="#removeAuthor" text="%label.remove" />
+      <TextField fx:id="title" layoutX="103.0" layoutY="87.0" prefHeight="31.0" prefWidth="207.0" />
+      <Label layoutX="22.0" layoutY="92.0" styleClass="textLabel" text="%label.title" />
+      <Button fx:id="saveButton" layoutX="357.0" layoutY="131.0" mnemonicParsing="false" onAction="#saveBook" text="%label.save" />
+   <Label layoutX="172.0" layoutY="20.0" styleClass="formTitle" text="%label.titleForm" />
+
+   <Label layoutX="39.0" layoutY="146.0" styleClass="textLabel" text="%label.authors" />
+   <Separator layoutX="-1.0" layoutY="67.0" prefHeight="2.0" prefWidth="508.0" />
+   <Separator layoutX="331.0" layoutY="67.0" orientation="VERTICAL" prefHeight="343.0" prefWidth="0.0" />
+   <Label layoutX="383.0" layoutY="82.0" styleClass="textLabel" text="%label.Option" />
+   <Separator layoutX="334.0" layoutY="112.0" prefWidth="176.0" />
+</AnchorPane>
