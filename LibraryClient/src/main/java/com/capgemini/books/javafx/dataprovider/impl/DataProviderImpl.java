@@ -68,7 +68,7 @@ public class DataProviderImpl implements DataProvider {
 			e.printStackTrace();
 
 		} catch (IOException e) {
-			System.out.println("Brak serwera");
+			System.out.println("nie mozna otworzyc polaczenia z serwerem");
 			e.printStackTrace();
 
 		}
@@ -129,6 +129,7 @@ public class DataProviderImpl implements DataProvider {
 			e.printStackTrace();
 
 		} catch (IOException e) {
+			System.out.println("nie mozna otworzyc polaczenia z serwerem");
 
 			e.printStackTrace();
 
@@ -163,7 +164,7 @@ public class DataProviderImpl implements DataProvider {
 			e.printStackTrace();
 
 		} catch (IOException e) {
-			System.out.println("blad z serwera");
+			System.out.println("nie mozna otworzyc polaczenia z serwerem");
 			e.printStackTrace();
 		}
 	}
