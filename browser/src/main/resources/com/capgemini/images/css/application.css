@@ -5,3 +5,122 @@
 .hbox {
 	-fx-background-color: #336699;
 }
+
+
+
+.root {
+	/* Define aliases for colors. */
+	-ps-base-color: rgb(50, 50, 50);
+	-ps-control-background-color: derive(-ps-base-color, 120.0%);
+	-ps-control-foreground-color: derive(-ps-base-color, 60.0%);
+	-ps-text-color: black;
+
+	-fx-background-color: -ps-base-color;
+
+
+}
+
+.formTitle {
+	-fx-font-size: 25.0px;
+	-fx-font-family: "Comic Sans MS Bold";
+	-fx-font-weight: bold;
+	-fx-text-fill: white;
+}
+
+.textLabel{
+	-fx-font-weight: bold;
+	-fx-text-fill: #d8d8d8;
+}
+
+
+
+
+.text-field, .table-view {
+	-fx-background-color: -ps-control-background-color;
+}
+
+
+.button {
+    -fx-padding: 5 22 5 22;
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-background-radius: 0;
+    -fx-background-color: #1d1d1d;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 11pt;
+    -fx-text-fill: #d8d8d8;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.button:hover {
+    -fx-background-color: #3a3a3a;
+}
+
+.button:pressed, .button:default:hover:pressed {
+  -fx-background-color: white;
+  -fx-text-fill: #1d1d1d;
+}
+
+.button:focused {
+    -fx-border-color: white, white;
+    -fx-border-width: 1, 1;
+    -fx-border-style: solid, segments(1, 1);
+    -fx-border-radius: 0, 0;
+    -fx-border-insets: 1 1 1 1, 0;
+}
+
+.button:disabled, .button:default:disabled {
+    -fx-opacity: 0.4;
+    -fx-background-color: #1d1d1d;
+    -fx-text-fill: white;
+}
+
+.button:default {
+    -fx-background-color: -fx-focus-color;
+    -fx-text-fill: #ffffff;
+}
+
+.button:default:hover {
+    -fx-background-color: derive(-fx-focus-color,90%);
+}
+
+
+.image-view .column-header, .image-view  .filler{
+
+	-fx-background-color:-ps-control-foreground-color;
+}
+
+
+.table-view .column-drag-header {
+	-fx-background-color: derive(-ps-control-foreground-color, 40.0%);
+}
+
+.table-view .scroll-bar {
+	-fx-background-color: -ps-control-background-color;
+}
+
+.table-view .scroll-bar .thumb {
+	-fx-background-color: -ps-control-foreground-color;
+}
+
+.table-view .scroll-bar > .increment-button, .table-view .scroll-bar > .decrement-button {
+	-fx-background-color: -ps-control-background-color;
+}
+
+
+.scroll .scroll-bar {
+	-fx-background-color: -ps-control-background-color;
+}
+
+
+.scroll  .scroll-bar .thumb {
+	-fx-background-color: -ps-control-foreground-color;
+}
+
+.scroll  .scroll-bar > .increment-button, .scroll .scroll-bar > .decrement-button {
+	-fx-background-color: -ps-control-background-color;
+}
+
+
+
+

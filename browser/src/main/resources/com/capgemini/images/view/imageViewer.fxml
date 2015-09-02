@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?scenebuilder-preview-i18n-resource ../bundle/bundle.properties?>
+<?scenebuilder-stylesheet ../css/standard.css?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Label?>
+
+<AnchorPane prefHeight="707.0" prefWidth="938.0" xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.capgemini.images.controller.ViewerController">
+  <Label layoutX="398.0" layoutY="14.0" styleClass="formTitle" text="%label.title" textAlignment="CENTER" />
+  <Button fx:id="selectDirectory" defaultButton="true" layoutX="14.0" layoutY="70.0" mnemonicParsing="false" onAction="#selectButtonAction" text="%button.directorySearch" />
+   <TableView fx:id="imagesTable" layoutX="14.0" layoutY="101.0" onMouseClicked="#mouseClicked" prefHeight="394.0" prefWidth="223.0">
+     <columns>
+       <TableColumn fx:id="imageId" prefWidth="45.0" text="%label.id" />
+       <TableColumn fx:id="imageName" prefWidth="177.0" text="%label.name" />
+     </columns>
+   </TableView>
+   <ScrollPane fx:id="scrollImage" layoutX="349.0" layoutY="60.0" prefHeight="402.0" prefWidth="551.0" styleClass="scroll">
+      <content>
+         <ImageView fx:id="imageView" fitHeight="413.0" fitWidth="553.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor></ImageView>
+      </content>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+   </ScrollPane>
+   <Button fx:id="nextImage" layoutX="847.0" layoutY="469.0" mnemonicParsing="false" onAction="#next" prefHeight="31.0" prefWidth="80.0" text="%button.next" />
+   <Button fx:id="previousImage" layoutX="334.0" layoutY="469.0" mnemonicParsing="false" onAction="#previous" prefHeight="31.0" prefWidth="100.0" text="%button.previous" />
+   <Button fx:id="play" layoutX="545.0" layoutY="469.0" mnemonicParsing="false" onAction="#playButton" prefHeight="31.0" prefWidth="80.0" text="%button.play" />
+   <Button fx:id="stop" layoutX="625.0" layoutY="469.0" mnemonicParsing="false" onAction="#stopButton" prefHeight="31.0" prefWidth="90.0" text="%button.Stop" />
+   <ScrollPane fx:id="scrollThumbnails" layoutX="14.0" layoutY="526.0" prefHeight="157.0" prefWidth="890.0" styleClass="scroll">
+      <content>
+         <HBox fx:id="HboxThumbnails" prefHeight="153.0" prefWidth="887.0" />
+      </content>
+   </ScrollPane>
+   <Slider fx:id="zoomSlider" layoutX="316.0" layoutY="158.0" max="1024.0" min="100.0" onMouseDragged="#zoomMove" orientation="VERTICAL" value="1024.0">
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+   </Slider>
+   <Button fx:id="rotateLeft" layoutX="434.0" layoutY="469.0" mnemonicParsing="false" onAction="#rotateLeft" text="%button.Rleft" />
+   <Button fx:id="rotateRight" layoutX="715.0" layoutY="469.0" mnemonicParsing="false" onAction="#rotateRight" prefHeight="31.0" prefWidth="132.0" text="%button.RRight" />
+   <Separator layoutX="6.0" layoutY="49.0" prefHeight="0.0" prefWidth="928.0" />
+   <Separator layoutX="6.0" layoutY="517.0" prefHeight="3.0" prefWidth="928.0" />
+   <Separator layoutX="278.0" layoutY="49.0" orientation="VERTICAL" prefHeight="469.0" prefWidth="0.0" />
+
+</AnchorPane>

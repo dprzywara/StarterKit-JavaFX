@@ -35,7 +35,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
-public class BrowserController {
+public class ViewerController {
 
 	@FXML
 	Button selectDirectory;
@@ -43,8 +43,6 @@ public class BrowserController {
 	ScrollPane bookList;
 	@FXML
 	ImageView imageView;
-	@FXML
-	Button example;
 	@FXML
 	TableColumn<ImageVO, Integer> imageId;
 	@FXML
@@ -64,8 +62,6 @@ public class BrowserController {
 	Button stop;
 
 	@FXML
-	ScrollPane thumbnailScroll;
-	@FXML
 	ScrollPane scrollThumbnails;
 	@FXML
 	Slider zoomSlider;
@@ -83,30 +79,36 @@ public class BrowserController {
 	private static final double DEFAULT_THUMBNAIL_WIDTH = 150;
 	private static final double MAX_WIDTH = 1024;
 
-	public BrowserController() {
+	public ViewerController() {
 	}
 
 	@FXML
 	private void initialize() {
 
+		setinitImage();
+		initializeResultTable();
+		initHbox();
+		imagesTable.itemsProperty().bind(model.resultProperty());
+		zoomSlider.setMax(2048);
+		zoomSlider.setMin(200);
+
+	}
+
+	private void initHbox() {
+		HboxThumbnails.setPadding(new Insets(15, 12, 15, 12));
+		HboxThumbnails.setSpacing(10);
+		HboxThumbnails.getStyleClass().add("hbox");
+	}
+
+	private void setinitImage() {
+
 		scrollImage.setPannable(true);
-		String url = "https://www.colourbox.com/preview/8649111-no-photo-camera-sign-icon-photo-flash-symbol.jpg";
+		String url = "https://cdn3.iconfinder.com/data/icons/abstract-1/512/no_image-512.png";
 		Image image = new Image(url, 497, 377, false, true);
 		imageView.fitHeightProperty().set(scrollImage.getPrefHeight());
 		imageView.fitWidthProperty().set(scrollImage.getPrefWidth());
 		imageView.setImage(image);
 		scrollImage.setContent(imageView);
-
-		initializeResultTable();
-
-		imagesTable.itemsProperty().bind(model.resultProperty());
-		HboxThumbnails.setPadding(new Insets(15, 12, 15, 12));
-		HboxThumbnails.setSpacing(10);
-		HboxThumbnails.getStyleClass().add("hbox");
-
-		zoomSlider.setMax(2048);
-		zoomSlider.setMin(200);
-
 	}
 
 	private void initializeResultTable() {
@@ -157,19 +159,7 @@ public class BrowserController {
 			public void handle(MouseEvent event) {
 
 				if (event.getClickCount() == 2) {
-
-					StackPane sp = new StackPane();
-					Image image = imageView.getImage();
-					ImageView imgView = new ImageView(image);
-					sp.getChildren().add(imgView);
-
-					Scene secondScene = new Scene(sp);
-
-					Stage secondStage = new Stage();
-					secondStage.setTitle("Full image");
-					secondStage.setScene(secondScene);
-
-					secondStage.show();
+					openFullImage(imageView.getImage());
 				}
 
 				event.consume();
@@ -194,18 +184,7 @@ public class BrowserController {
 				scrollImage.setContent(imageView);
 
 				if (event.getClickCount() == 2) {
-
-					StackPane sp = new StackPane();
-					ImageView imgView = new ImageView(image);
-					sp.getChildren().add(imgView);
-
-					Scene secondScene = new Scene(sp);
-
-					Stage secondStage = new Stage();
-					secondStage.setTitle("Full image");
-					secondStage.setScene(secondScene);
-
-					secondStage.show();
+					openFullImage(image);
 				}
 
 				event.consume();
@@ -225,7 +204,26 @@ public class BrowserController {
 
 	}
 
+	private void showErrorAllert(String msg) {
+
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Error Alert");
+		alert.setHeaderText("Error");
+		alert.setContentText(msg);
+		alert.showAndWait();
+	}
+
+	private void showInformationAllert(String msg) {
+
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Empty list information");
+		alert.setHeaderText("Information Alert");
+		alert.setContentText(msg);
+		alert.show();
+	}
+
 	public String chooseDirectory() {
+
 		DirectoryChooser directoryChooser = new DirectoryChooser();
 		directoryChooser.setTitle("Open File");
 		String currentDir = System.getProperty("user.dir") + File.separator;
@@ -234,13 +232,8 @@ public class BrowserController {
 		File selectedDirectory = directoryChooser.showDialog(new Stage());
 
 		if (selectedDirectory == null) {
-
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error Alert");
-			alert.setHeaderText("Error");
-			alert.setContentText("Nie wybrales katalogu");
-			alert.showAndWait();
-			return directoryChooser.getInitialDirectory().getPath();
+			showErrorAllert("No choosen directory");
+			return null;
 
 		} else {
 			return selectedDirectory.getAbsolutePath();
@@ -249,148 +242,186 @@ public class BrowserController {
 
 	public List<ImageVO> createImageList(String path) {
 
-		List<ImageVO> listOfImages = new ArrayList<ImageVO>();
-		File folder = new File(path);
-		File[] listOfFiles = folder.listFiles();
+		if (path != null) {
+			List<ImageVO> listOfImages = new ArrayList<ImageVO>();
 
-		for (int i = 0; i < listOfFiles.length; i++) {
+			File folder = new File(path);
+			File[] listOfFiles = folder.listFiles();
 
-			if (listOfFiles[i].getName().endsWith("jpg") || listOfFiles[i].getName().endsWith("JPG")
-					|| listOfFiles[i].getName().endsWith("png") || listOfFiles[i].getName().endsWith("PNG")) {
-				listOfImages.add(new ImageVO(i + 1, listOfFiles[i].getName(), listOfFiles[i].getAbsolutePath()));
+			for (int i = 0; i < listOfFiles.length; i++) {
+				if (listOfFiles[i].getName().endsWith("jpg") || listOfFiles[i].getName().endsWith("JPG")
+						|| listOfFiles[i].getName().endsWith("png") || listOfFiles[i].getName().endsWith("PNG")) {
+					listOfImages.add(new ImageVO(i + 1, listOfFiles[i].getName(), listOfFiles[i].getAbsolutePath()));
+				}
 			}
+			return listOfImages;
+		} else {
+			return null;
 		}
-
-		return listOfImages;
 
 	}
 
 	@FXML
 	public void selectButtonAction(ActionEvent event) {
 		listOfImages = createImageList(chooseDirectory());
-		imagesTable.getItems().clear();
-		HboxThumbnails.getChildren().clear();
+		if (listOfImages != null) {
+			imagesTable.getItems().clear();
+			HboxThumbnails.getChildren().clear();
 
-		if (listOfImages.size() == 0) {
+			if (listOfImages.size() == 0) {
 
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Empty list information");
-			alert.setHeaderText("Information Alert");
-			String s = "No images in choosen directory, try again";
-			alert.setContentText(s);
-			alert.show();
+				showInformationAllert("No images in choosen directory, try again");
 
+			} else {
+				model.setResult(listOfImages);
+				imagesTable.getSelectionModel().select(listOfImages.get(0));
+				initializeThumbnailsList();
+
+			}
 		} else {
-			model.setResult(listOfImages);
-			imagesTable.getSelectionModel().select(listOfImages.get(0));
-			initializeThumbnailsList();
-
+			showInformationAllert("Choose property directory first");
 		}
 
 	}
 
 	@FXML
 	public void next(ActionEvent event) {
+		if (listOfImages != null) {
 
-		int currentId = imagesTable.getSelectionModel().getSelectedIndex();
-		if (currentId == imagesTable.getItems().size() - 1) {
-			imagesTable.getSelectionModel().select(imagesTable.getItems().get(0));
+			int currentId = imagesTable.getSelectionModel().getSelectedIndex();
+			if (currentId == imagesTable.getItems().size() - 1) {
+				imagesTable.getSelectionModel().select(imagesTable.getItems().get(0));
+			} else {
+				imagesTable.getSelectionModel().select(imagesTable.getItems().get(currentId + 1));
+
+			}
 		} else {
-			imagesTable.getSelectionModel().select(imagesTable.getItems().get(currentId + 1));
-
+			showErrorAllert("No directory choosen");
 		}
 
 	}
 
 	@FXML
 	public void previous(ActionEvent event) {
+		if (listOfImages != null) {
+			int currentId = imagesTable.getSelectionModel().getSelectedIndex();
+			if (currentId == 0) {
+				imagesTable.getSelectionModel().select(imagesTable.getItems().get(imagesTable.getItems().size() - 1));
+			} else {
+				imagesTable.getSelectionModel().select(imagesTable.getItems().get(currentId - 1));
 
-		int currentId = imagesTable.getSelectionModel().getSelectedIndex();
-		if (currentId == 0) {
-			imagesTable.getSelectionModel().select(imagesTable.getItems().get(imagesTable.getItems().size() - 1));
+			}
 		} else {
-			imagesTable.getSelectionModel().select(imagesTable.getItems().get(currentId - 1));
-
+			showErrorAllert("No directory choosen");
 		}
 	}
 
 	@FXML
 	public void playButton(ActionEvent event) {
 		STOP = false;
+		if (listOfImages != null) {
+			Task<Collection<ImageVO>> backgroundTask = new Task<Collection<ImageVO>>() {
 
-		Task<Collection<ImageVO>> backgroundTask = new Task<Collection<ImageVO>>() {
+				@Override
+				protected Collection<ImageVO> call() throws Exception {
+					for (int i = 0; i < imagesTable.getItems().size(); i++) {
+						imagesTable.getSelectionModel().select(imagesTable.getItems().get(i));
+						if (STOP) {
+							break;
+						}
+						try {
+							Thread.sleep(2500);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						if (STOP) {
+							break;
+						}
+					}
 
-			@Override
-			protected Collection<ImageVO> call() throws Exception {
-				for (int i = 0; i < imagesTable.getItems().size(); i++) {
-					imagesTable.getSelectionModel().select(imagesTable.getItems().get(i));
-					if (STOP) {
-						break;
-					}
-					try {
-						Thread.sleep(2500);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					if (STOP) {
-						break;
-					}
+					return imagesTable.getItems();
 				}
+			};
+			new Thread(backgroundTask).start();
+		}
 
-				return imagesTable.getItems();
-			}
-		};
-		new Thread(backgroundTask).start();
-
-	}
-
-	@FXML
-	public void stopButton(ActionEvent event) {
-		STOP = true;
-	}
-
-	@FXML
-	public void mouseClicked(MouseEvent event) {
-
-		if (event.getClickCount() == 2) {
-			StackPane sp = new StackPane();
-			File file = new File(imagesTable.getSelectionModel().getSelectedItem().getPath());
-			Image image = new Image(file.toURI().toString(), MAX_WIDTH, 0, true, true);
-
-			ImageView imgView = new ImageView(image);
-			sp.getChildren().add(imgView);
-
-			Scene secondScene = new Scene(sp);
-
-			Stage secondStage = new Stage();
-			secondStage.setTitle("Full image");
-			secondStage.setScene(secondScene);
-
-			secondStage.show();
+		else {
+			showErrorAllert("No directory choosen");
 		}
 
 	}
 
 	@FXML
+	public void stopButton(ActionEvent event) {
+		if (listOfImages != null) {
+
+			STOP = true;
+		} else {
+			showErrorAllert("Choose directory first");
+		}
+	}
+
+	@FXML
+	public void mouseClicked(MouseEvent event) {
+		if (listOfImages != null) {
+
+			if (event.getClickCount() == 2) {
+				File file = new File(imagesTable.getSelectionModel().getSelectedItem().getPath());
+				Image image = new Image(file.toURI().toString(), MAX_WIDTH, 0, true, true);
+				openFullImage(image);
+			}
+		} else {
+			showErrorAllert("Choose directory first");
+		}
+
+	}
+
+	private void openFullImage(Image image) {
+		StackPane sp = new StackPane();
+		ImageView imgView = new ImageView(image);
+		sp.getChildren().add(imgView);
+		Scene secondScene = new Scene(sp);
+		Stage secondStage = new Stage();
+		secondStage.setTitle("Full image");
+		secondStage.setScene(secondScene);
+		secondStage.show();
+	}
+
+	@FXML
 	public void zoomMove(MouseEvent event) {
-		imageView.setFitWidth(zoomSlider.getValue() * 1.5);
-		imageView.setFitHeight(zoomSlider.getValue());
+		imageView.setFitWidth(zoomSlider.getValue());
+		imageView.setFitHeight(zoomSlider.getValue() * 1.5);
 
 	}
 
 	@FXML
 	public void rotateLeft(ActionEvent event) {
-		double oldRotation = imageView.getRotate();
-		imageView.setRotate(oldRotation - 90);
+
+		if (listOfImages != null) {
+			double oldRotation = imageView.getRotate();
+			imageView.setRotate(oldRotation - 90);
+
+		}
+
+		else {
+			showErrorAllert("Choose directory first");
+		}
+
 	}
 
 	@FXML
 	public void rotateRight(ActionEvent event) {
 
-		double oldRotation = imageView.getRotate();
-		imageView.setRotate(oldRotation + 90);
+		if (listOfImages != null) {
+
+			double oldRotation = imageView.getRotate();
+			imageView.setRotate(oldRotation + 90);
+
+		}
+
+		else {
+			showErrorAllert("Choose directory first");
+		}
 	}
-
-
 
 }
